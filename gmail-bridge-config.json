@@ -1,0 +1,42 @@
+{
+  "_comment": "Shipped template. The installer replaces every {{...}} placeholder: {{USER_GMAIL}} = the Gmail address this bridge reads tasks from and sends results with; {{GMAIL_APP_PASSWORD}} = that account's 16-char Google app password (myaccount.google.com/apppasswords). A blank device_tag means this computer's name. Device entries are ignored until the installer replaces their {{..._ID}} key with a real device ID (D followed by two or more digits); an IP left as a placeholder is treated as unset. The bridge ignores unknown keys such as this one.",
+  "email": "{{USER_GMAIL}}",
+  "app_password": "{{GMAIL_APP_PASSWORD}}",
+  "poll_seconds": 30,
+  "results_poll_seconds": 5,
+  "idle": true,
+  "inboxes": {
+    "cursor": "%USERPROFILE%\\cursor-inbox",
+    "openclaw": "%USERPROFILE%\\openclaw-inbox"
+  },
+  "default_executor": "cursor",
+  "results_dirs": {},
+  "done_dirs": {},
+  "allowed_workspaces": "%USERPROFILE%\\cursor-inbox\\allowed-workspaces.txt",
+  "runners": {
+    "cursor": "powershell.exe -NoProfile -ExecutionPolicy Bypass -NoExit -File \"{bridge_dir}\\Invoke-JarvisTask.ps1\" -Inbox \"{inbox}\" -AllowFile \"{allowed_workspaces}\" -AutoApprove",
+    "openclaw": ""
+  },
+  "allowed_senders": [
+    "{{USER_GMAIL}}"
+  ],
+  "device_tag": "",
+  "devices": {
+    "{{BRIDGE_HOST_ID}}": {
+      "name": "bridge-host",
+      "ip": "127.0.0.1"
+    },
+    "{{SERVER_ID}}": {
+      "name": "webserver",
+      "ip": "{{SERVER_IP}}"
+    },
+    "{{WORKER_ID}}": {
+      "name": "worker",
+      "ip": "{{WORKER_IP}}"
+    }
+  },
+  "start_on_launch": true,
+  "work_dirs": {
+    "openclaw": "%OPENCLAW_WORKSPACE%\\jarvis-bridge-tasks"
+  }
+}

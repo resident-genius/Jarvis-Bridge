@@ -1,0 +1,6 @@
+# Jarvis Bridge has no required pip dependencies — everything is Python standard
+# library (plus tkinter, which ships with the python.org Windows installer).
+#
+# Optional (enable minimize-to-tray in the GUI):
+# pystray
+# pillow

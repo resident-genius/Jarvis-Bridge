@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+.env
+*.egg-info/
+dist/
+build/
+
+# Bridge runtime state (per-install, never committed)
+bridge.config.json
+*.log
+crash.log
+heartbeat*.json
+workspace/
+jarvis-bridge-tasks/
+
+# Credentials and secrets
+*credential*
+*secret*
+*.pem
+*.key
+
+# Windows
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store

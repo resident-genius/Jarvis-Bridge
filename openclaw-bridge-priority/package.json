@@ -1,0 +1,8 @@
+{
+  "name": "jarvis-bridge-priority",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "description": "OpenClaw plugin: Jarvis Bridge runs take priority over interactive chat on the shared local model.",
+  "openclaw": { "extensions": ["./bridge-priority.js"] }
+}

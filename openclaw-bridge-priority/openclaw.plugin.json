@@ -1,0 +1,63 @@
+{
+  "id": "jarvis-bridge-priority",
+  "name": "Jarvis Bridge priority",
+  "description": "Bridge task runs get the local model first: interactive chat turns on the same model provider wait while a bridge run is active, chat runs pause at tool calls, and chat runs using the model are stopped when a bridge run starts.",
+  "version": "2.0.0",
+  "activation": { "onStartup": true },
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "bridgeJobNames": {
+        "type": "array",
+        "items": { "type": "string" },
+        "description": "Automation (cron job) names whose runs are bridge runs."
+      },
+      "bridgePromptMarkers": {
+        "type": "array",
+        "items": { "type": "string" },
+        "description": "A non-interactive run whose prompt contains one of these strings is a bridge run."
+      },
+      "chatTriggers": {
+        "type": "array",
+        "items": { "type": "string" },
+        "description": "Run triggers that count as interactive chat work."
+      },
+      "holdChat": {
+        "type": "boolean",
+        "description": "Make new chat turns wait while a bridge run is active."
+      },
+      "holdChatTools": {
+        "type": "boolean",
+        "description": "Pause a running chat at its next tool call while a bridge run is active."
+      },
+      "preemptInFlightChat": {
+        "type": "boolean",
+        "description": "Stop chat runs using the model when a bridge run starts, when a chat model call starts during a bridge run, and when a tool pause reaches its limit."
+      },
+      "notifyChat": {
+        "type": "boolean",
+        "description": "Tell the chat user when their turn is held or stopped for a bridge run."
+      },
+      "sameProviderOnly": {
+        "type": "boolean",
+        "description": "Only hold/stop chat work that uses the same model provider as the bridge run."
+      },
+      "maxChatHoldMinutes": {
+        "type": "number",
+        "minimum": 1,
+        "description": "Longest a single chat turn waits before it runs anyway."
+      },
+      "maxToolHoldMinutes": {
+        "type": "number",
+        "minimum": 1,
+        "description": "Longest a chat tool call waits (also capped by the plugin's before_tool_call hook budget, max 10 min)."
+      },
+      "maxBridgeHoldMinutes": {
+        "type": "number",
+        "minimum": 1,
+        "description": "A bridge run that never reports its end stops blocking chat after this long."
+      }
+    }
+  }
+}

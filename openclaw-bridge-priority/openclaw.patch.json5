@@ -1,0 +1,35 @@
+// Applied to ~/.openclaw/openclaw.json with:
+//   openclaw config patch --file <this file>
+// then a full gateway restart (a hot reload keeps the old plugin code loaded):
+//   openclaw gateway restart --safe
+// Adds only the jarvis-bridge-priority plugin; nothing else in the config changes.
+// v2.0 added hooks.timeouts.before_tool_call, holdChatTools and maxToolHoldMinutes.
+{
+  plugins: {
+    load: { paths: ["~/jarvis-bridge/openclaw-bridge-priority"] },
+    entries: {
+      "jarvis-bridge-priority": {
+        enabled: true,
+        hooks: {
+          allowConversationAccess: true,
+          // A paused chat tool call is held inside before_tool_call; OpenClaw's
+          // default 15 s budget would fail it closed. 600000 ms is the maximum.
+          timeouts: { before_tool_call: 600000 },
+        },
+        config: {
+          bridgeJobNames: ["jarvis-bridge-inbox-watcher"],
+          bridgePromptMarkers: [".jarvis-task.json"],
+          chatTriggers: ["user", "manual"],
+          holdChat: true,
+          holdChatTools: true,
+          preemptInFlightChat: true,
+          notifyChat: true,
+          sameProviderOnly: true,
+          maxChatHoldMinutes: 34,
+          maxToolHoldMinutes: 9,
+          maxBridgeHoldMinutes: 35,
+        },
+      },
+    },
+  },
+}

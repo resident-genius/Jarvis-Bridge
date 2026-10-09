@@ -1,0 +1,59 @@
+﻿LIVE skill Neo loads: %USERPROFILE%\.openclaw\workspace\skills\openclaw-bridge\SKILL.md
+Last written: 09/29/2026 06:26:44
+
+  13| bridge emails your result to Jarvis. Follow every rule below on every task.
+  14| 
+  15| **Standing rule: every result you write attaches at least one PNG
+  16| screenshot. No exceptions. See section 6.**
+
+ 186| ## 6. Screenshot proof on every task (standing rule from {{OPERATOR_NAME}})
+ 187| 
+ 188| **Every result file you write must list at least one PNG screenshot in
+ 189| `attachments`. No exceptions.** This applies to every bridge task: trivial
+ 190| tasks, text-only tasks, probes, `plan` and `ask` tasks, tasks that fail, and
+ 191| refusals (section 8). {{OPERATOR_NAME}}'s words: "Even a useless screenshot is better
+ 192| than having to ask twice for one." Do it automatically. Jarvis does not have
+ 193| to ask for it, and a package that says no screenshot is needed still gets
+ 194| one.
+ 195| 
+ 196| 1. **Use the helper.** `bridge-proof.ps1` sits in the same folder as this
+ 197|    `SKILL.md`. After the work is done, and before you write the result file,
+ 198|    run it with `exec`:
+ 199| 
+ 200|    ```
+ 201|    powershell -NoProfile -ExecutionPolicy Bypass -File "<folder of this SKILL.md>\bridge-proof.ps1" -Workspace "<workspace>" -TaskId "<task-id>" -Note "<one to three plain sentences: what you did and what you saw>"
+ 202|    ```
+ 203| 
+ 204|    Fill in the package's real `workspace` and `task_id`. You may add
+ 205|    `-NoteFile <file name>` to include a text file from the workspace, such
+ 206|    as saved command output.
+ 207| 2. **What it does.** It tries to capture the real screen. If it cannot (for
+ 208|    example because OpenClaw runs as a background service or the screen is
+ 209|    locked), it saves a PNG labeled "RENDERED PROOF IMAGE" instead, showing
+ 210|    the task id, the time, your note, and the files in the workspace. Both
+ 211|    count as the screenshot. It only writes `<task-id>-proof.png` inside the
+ 212|    workspace.
+ 213| 3. **Check its output.** It prints `PROOF_PNG=`, `PROOF_KIND=` (`screen` or
+ 214|    `rendered`) and `PROOF_BYTES=`. When it exits with code 0 and prints
+ 215|    `PROOF_PNG=`, add `<task-id>-proof.png` to `attachments`. In
+ 216|    `jarvis_report`, say whether it was a `screen` or `rendered` screenshot.
+ 217| 4. **More screenshots are welcome.** Run it again with `-Name <name>.png`
+ 218|    for extra proof, within the section 5 limits (10 files, 10 MB).
+ 219| 5. **Always allowed.** Running the helper is allowed in every `mode`
+ 220|    (no confirmation needed in `supervised`), in `plan` and `ask`, for
+ 221|    probes, and when `allow_shell` is `false`. It is the one command those
+ 222|    settings do not forbid. Running it from this skill's folder is allowed
+ 223|    even though that folder is outside the workspace. Sections 2 and 3 still
+ 224|    apply otherwise: if `do_not_touch` forbids screenshots or writing into
+ 225|    the workspace, obey it and treat it as item 6.
+ 226| 6. **If it fails** (exit code 1, no `PROOF_PNG=`, or the helper is missing),
+ 227|    try once more. If it still fails, do not list a PNG. Put its output in
+ 228|    `stderr`, say plainly in `jarvis_report` that the screenshot is missing
+ 229|    and why, and set `exit_code` to 1. Never list a PNG you did not just
+ 230|    save, and never reuse an old one.
+ 231| 
+ 232| ### Extra rule for GPU model work
+ 233| 
+ 234| 1. This applies to any task that puts a model on a GPU: installing,
+ 235|    loading, serving, converting, or benchmarking it.
+
